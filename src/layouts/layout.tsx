@@ -1,17 +1,30 @@
-import {Outlet} from "react-router";
+import { useState } from "react";
+import { Outlet } from "react-router";
 import Header from "./header.tsx";
 import Footer from "./footer.tsx";
+import LoginDrawer from "../pages/components/LoginDrawer.tsx";
 
-function layout() {
-    return <>
-    <div>
-        <Header />
-        <div>
-            <Outlet />
+function Layout() {
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+    return (
+        <div className="relative flex flex-col min-h-screen">
+            {/* Header에 함수 전달 */}
+            <Header onLoginClick={() => setIsLoginOpen(true)} />
+
+            <div className="flex-1">
+                <Outlet />
+            </div>
+
+            <Footer />
+
+            {/* 사이드바 배치 */}
+            <LoginDrawer
+                isOpen={isLoginOpen}
+                onClose={() => setIsLoginOpen(false)}
+            />
         </div>
-        <Footer />
-    </div>
-    </>
+    );
 }
 
-export default layout;
+export default Layout;

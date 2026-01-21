@@ -1,14 +1,14 @@
 import { twMerge } from "tailwind-merge";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {IoIosSearch} from "react-icons/io";
-import {RiShoppingBagLine} from "react-icons/ri";
-import {LuUser} from "react-icons/lu";
+import { IoIosSearch } from "react-icons/io";
+import { RiShoppingBagLine } from "react-icons/ri";
+import { LuUser } from "react-icons/lu";
 
 const MENU = [
     {
         name: "선글라스",
-        path: "/sunglasses/view-all",
+        path: "/category/sunglasses/view-all",
         subMenu: [
             { name: "전체보기", path: "/category/sunglasses/view-all" },
             { name: "2026 컬렉션", path: "/category/sunglasses/2026-collection" },
@@ -21,7 +21,7 @@ const MENU = [
     },
     {
         name: "안경",
-        path: "/glasses/view-all",
+        path: "/category/glasses/view-all",
         subMenu: [
             { name: "전체보기", path: "/category/glasses/view-all" },
             { name: "2026 컬렉션", path: "/category/glasses/2026-collection" },
@@ -35,7 +35,7 @@ const MENU = [
     },
     {
         name: "컬렉션",
-        path: "/collections/2026-collection",
+        path: "/category/collections/2026-collection",
         subMenu: [
             { name: "2026 컬렉션", path: "/category/collections/2026-collection" },
             { name: "2025 FALL", path: "/category/collections/2025-fall-collection" },
@@ -57,20 +57,26 @@ const MENU = [
     },
 ];
 
-const RIGHT_MENU = [
-    { name: '슬라이드', path: '/slide' },
-    { name: '검색', path: '/search', icon: <IoIosSearch  size={24}/> },
-    { name: '로그인', path: '/login', icon:<LuUser  size={24}/> },
-    { name: '쇼핑백', path: '/cart', icon: <RiShoppingBagLine size={24} /> },
-];
+// 🌟 외부 handleLogoClick 선언을 삭제했습니다.
 
-export default function Header() {
+// 🌟 props 타입을 정의하고 매개변수에 추가했습니다.
+export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
     const [menuPositions, setMenuPositions] = useState<{ [key: string]: number }>({});
     const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
 
     const isHome = location.pathname === '/' || location.pathname === '/home';
+
+    // 🌟 컴포넌트 내부의 handleLogoClick 하나만 유지합니다.
+    const handleLogoClick = () => {
+        if (location.pathname === "/" || location.pathname === "/home") {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     useEffect(() => {
         if (!isHome) {
@@ -92,13 +98,11 @@ export default function Header() {
         setMenuPositions(prev => ({ ...prev, [menuName]: rect.left }));
     };
 
-    // 비디오 구간을 지났는지 여부
     const isVideoPassed = !isHome || isScrolled;
 
     return (
         <div className="relative">
             <header
-                // 🌟 전체 헤더 영역에서 마우스가 나가야만 서브메뉴가 닫히도록 설정
                 onMouseLeave={() => setHoveredMenu(null)}
                 className={twMerge(
                     "fixed top-0 left-0 right-0 z-50 transition-all",
@@ -108,7 +112,6 @@ export default function Header() {
                     !isHome && "relative"
                 )}
             >
-                {/* 메인 메뉴 상단 바 */}
                 <div className="grid grid-cols-3 items-center h-[90px] px-[60px] mobile:h-[56px] mobile:px-[12px]">
                     <nav className="flex gap-5 font-bold h-full items-center">
                         {MENU.map(menu => (
@@ -125,26 +128,34 @@ export default function Header() {
                     </nav>
 
                     <div className="text-4xl text-center font-bold tracking-tighter">
-                        <Link to="/">GENTLE MONSTER</Link>
+                        <Link to="/" onClick={handleLogoClick}>
+                            GENTLE MONSTER
+                        </Link>
                     </div>
 
-                    {/* RIGHT: 아이콘 메뉴 */}
                     <div className="flex gap-3 justify-end items-center">
                         <div className={twMerge("flex","items-center")}>
-                            <Link to="/slide" className="text-[13px] font-bold">슬라이드</Link> {/*이 부분 수정*/}
-                            <span className="text-[10px] opacity-30">|</span>
+                            <Link to="/slide" className="text-[13px] font-bold">슬라이드</Link>
+                            <span className="text-[10px] opacity-30 mx-2">|</span>
                             <Link to="/search" className="p-1"><IoIosSearch  size={24} /></Link>
                         </div>
-                        <Link to="/login" className="p-1"><LuUser size={24} /></Link>
+                        {/* 🌟 로그인 버튼: 클릭 시 Drawer를 엽니다. */}
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onLoginClick();
+                            }}
+                            className="p-1 hover:opacity-50 transition-opacity"
+                        >
+                            <LuUser size={24} />
+                        </button>
                         <Link to="/cart" className="p-1"><RiShoppingBagLine size={24} /></Link>
                     </div>
                 </div>
 
-                {/* 🌟 서브메뉴 드롭다운 (헤더 박스 내부에 위치) */}
                 <div
                     className={twMerge(
                         "overflow-hidden transition-all duration-500 ease-in-out",
-                        // 비디오를 지났을 때만 서브메뉴 배경에도 blur 적용
                         hoveredMenu ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
                     )}
                 >

@@ -34,7 +34,7 @@ function LookBookSlider() {
                         sticky: true,
                         momentum: false,
                     }}
-                    speed={800}
+                    speed={100}
                     touchRatio={1.2}
                     className="w-full h-[700px]" // 슬라이더 자체 높이를 이미지 박스와 일치시킴
                 >

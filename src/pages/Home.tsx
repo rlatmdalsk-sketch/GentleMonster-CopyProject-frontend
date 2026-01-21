@@ -13,6 +13,7 @@ import {twMerge} from "tailwind-merge";
 import {Pagination, Navigation} from "swiper/modules";
 import {Link} from "react-router-dom";
 import LookBookSlider from "./components/LookBookSlider.tsx";
+import BestSellerSlider from "./components/BestSellerSlider.tsx";
 
 const SLIDES = [
     {
@@ -222,7 +223,7 @@ function Home() {
                 <div className={twMerge("pt-[55px]", "px-[50px]", "w-full", "pb-10")}>
                     <p className={twMerge("text-[#111]", "text-[17px]","font-[550]")}>새롭게 선보이는 젠틀몬스터 신제품</p>
                     <Link
-                        to="/"
+                        to="/category/sunglasses/view-all"
                         className={twMerge("text-[12px]","underline","decoration-1")}
                     >
                         더보기
@@ -240,14 +241,14 @@ function Home() {
                 <div className={twMerge("pt-[55px]", "px-[50px]", "w-full", "pb-10")}>
                     <p className={twMerge("text-[#111]", "text-[17px]","font-[550]")}>TOP 20 베스트셀러</p>
                     <Link
-                        to="/"
+                        to="/category/sunglasses/bestsellers"
                         className={twMerge("text-[12px]","underline","decoration-1")}
                     >
                         더보기
                     </Link>
                 </div>
-                <div className="mt-20">
-                    <LookBookSlider/>
+                <div>
+                    <BestSellerSlider/>
                 </div>
             </div>
         </div>
