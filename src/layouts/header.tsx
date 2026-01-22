@@ -57,9 +57,6 @@ const MENU = [
     },
 ];
 
-// 🌟 외부 handleLogoClick 선언을 삭제했습니다.
-
-// 🌟 props 타입을 정의하고 매개변수에 추가했습니다.
 export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
     const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
     const [menuPositions, setMenuPositions] = useState<{ [key: string]: number }>({});
@@ -68,16 +65,12 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
 
     const isHome = location.pathname === '/' || location.pathname === '/home';
 
-    // 🌟 컴포넌트 내부의 handleLogoClick 하나만 유지합니다.
-    const handleLogoClick = () => {
-        if (location.pathname === "/" || location.pathname === "/home") {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-    };
+    // 🌟 1. 페이지 이동 시 드롭다운 닫기
+    useEffect(() => {
+        setHoveredMenu(null);
+    }, [location.pathname]);
 
+    // 🌟 2. 스크롤 감지 로직
     useEffect(() => {
         if (!isHome) {
             setIsScrolled(false);
@@ -91,6 +84,12 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isHome]);
+
+    const handleLogoClick = () => {
+        if (isHome) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
     const handleMenuHover = (menuName: string, event: React.MouseEvent<HTMLDivElement>) => {
         setHoveredMenu(menuName);
@@ -134,12 +133,11 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                     </div>
 
                     <div className="flex gap-3 justify-end items-center">
-                        <div className={twMerge("flex","items-center")}>
+                        <div className="flex items-center">
                             <Link to="/slide" className="text-[13px] font-bold">슬라이드</Link>
                             <span className="text-[10px] opacity-30 mx-2">|</span>
-                            <Link to="/search" className="p-1"><IoIosSearch  size={24} /></Link>
+                            <Link to="/search" className="p-1"><IoIosSearch size={24} /></Link>
                         </div>
-                        {/* 🌟 로그인 버튼: 클릭 시 Drawer를 엽니다. */}
                         <button
                             onClick={(e) => {
                                 e.preventDefault();
@@ -159,7 +157,7 @@ export default function Header({ onLoginClick }: { onLoginClick: () => void }) {
                         hoveredMenu ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
                     )}
                 >
-                    <div className="py-3 px-[10px]">
+                    <div className="py-3 px-[10px] bg-inherit"> {/* 배경색 유지를 위해 bg-inherit 추가 */}
                         {MENU.map(menu => (
                             <div
                                 key={menu.name}

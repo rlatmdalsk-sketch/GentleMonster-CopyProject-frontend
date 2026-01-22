@@ -51,7 +51,7 @@ const LoginDrawer = ({ isOpen, onClose }: Props) => {
                             <button className="w-full bg-gray-400 text-white py-4 text-[12px] font-bold mt-4">
                                 계속하기
                             </button>
-                            <Link to={"/"} className={twMerge("text-[12px]","w-full")}>계정 생성</Link>
+                            <Link to={"/Register"} className={twMerge("text-[12px]","w-full")} onClick={onClose}>계정 생성</Link>
                         </div>
                     </div>
 

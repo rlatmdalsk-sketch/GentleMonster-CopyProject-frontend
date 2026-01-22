@@ -1,7 +1,17 @@
 import {createBrowserRouter} from "react-router";
 import Layout from "../layouts/layout.tsx";
 import Home from "../pages/Home.tsx";
-import ViewAll from "../pages/Category/sunglasses/viewAll.tsx";
+import Register from "../pages/auth/register.tsx";
+import ViewAllSunglasses from "../pages/Category/sunglasses/viewAll.tsx";
+import C2026Sunglasses from "../pages/Category/sunglasses/2026-collection.tsx";
+import CF2025Sunglasses from "../pages/Category/sunglasses/2025-fall-collection.tsx";
+import CB2025Sunglasses from "../pages/Category/sunglasses/2025-bold-collection.tsx";
+import PocketSunglasses from "../pages/Category/sunglasses/pocket-collection.tsx";
+import BestSunglasses from "../pages/Category/sunglasses/bestsellers.tsx";
+import TintedSunglasses from "../pages/Category/sunglasses/tinted-lenses.tsx";
+import Stories from "../pages/Category/stories/stories.tsx";
+
+
 
 const router = createBrowserRouter([
     {
@@ -9,9 +19,24 @@ const router = createBrowserRouter([
         element: <Layout />,
         children: [
             {index: true, element: <Home />}, /*메인홈*/
-            { path: "login", element: <login />},
-            {path: "/category/sunglasses/view-all", element:<ViewAll />}
+            { path: "/register", element: <Register />},
+
+            /* 선글라스 카테고리 */
+            { path: "category/sunglasses/view-all", element: <ViewAllSunglasses /> },
+            { path: "category/sunglasses/2026-collection", element: <C2026Sunglasses /> },
+            { path: "category/sunglasses/2025-fall-collection", element: <CF2025Sunglasses /> },
+            { path: "category/sunglasses/2025-bold-collection", element: <CB2025Sunglasses /> },
+            { path: "category/sunglasses/pocket-collection", element: <PocketSunglasses /> },
+            { path: "category/sunglasses/bestsellers", element: <BestSunglasses /> },
+            { path: "category/sunglasses/tinted-lenses", element: <TintedSunglasses /> },
+
+
+
+            /*stoires 카테고리*/
+
+            { path: "/stories", element: <Stories /> },
         ]
+
     }
 ])
 
