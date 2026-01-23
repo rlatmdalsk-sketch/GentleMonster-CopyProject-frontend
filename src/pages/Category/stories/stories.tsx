@@ -1,4 +1,6 @@
-import { twMerge } from "tailwind-merge";
+import {Link} from "react-router-dom";
+import {twMerge} from "tailwind-merge";
+
 
 const STORIES = [
     {
@@ -13,57 +15,58 @@ const STORIES = [
         category: "COLLECTION",
         title: "2026 COLLECTION",
         description: "새로운 시각적 경험을 선사하는 2026 컬렉션의 캠페인과 아이웨어를 공개합니다.",
-        image: "https://images.gentlemonster.com/contents/stories/2026-collection/main_pc.jpg",
+        image: "https://gm-prd-resource.gentlemonster.com/main/banner/undefined/e7257dc6-f4f7-4387-9b54-f1a893c42f95/storylist_pc_3840*-1800..jpg",
     },
     {
         id: 3,
         category: "COLLABORATION",
         title: "MAISON MARGIELA – EDITION 2",
         description: "메종 마르지엘라와 젠틀몬스터가 함께한 두 번째 협업 에디션.",
-        image: "https://images.gentlemonster.com/contents/stories/margiela2/main_pc.jpg",
+        image: "https://gm-prd-resource.gentlemonster.com/contents/story/14668cac-4a67-46c0-adba-6be7feaf62b5/Pc.jpg",
     },
     {
         id: 4,
         category: "COLLABORATION",
         title: "GENTLE SALON",
         description: "제니와 함께 상상력을 현실로 구현한 젠틀 살롱 컬렉션.",
-        image: "https://images.gentlemonster.com/contents/stories/jentle-salon/main_pc.jpg",
+        image: "https://gm-dev-resource.gentlemonster.com/service/story/image/2febe4ce-4dea-435b-bf10-2d05ea382762/8.jentlesalon_storylist_pc.jpg",
     },
     {
         id: 5,
         category: "COLLECTION",
         title: "2025 FALL COLLECTION",
         description: "가을의 서사를 담은 차분하고 정교한 디자인의 새로운 라인업.",
-        image: "https://images.gentlemonster.com/contents/stories/2025-fall-collection/main_pc.jpg",
+        image: "https://gm-prd-resource.gentlemonster.com/main/banner/undefined/e816e4bb-7d1e-460a-ba80-67a9aac83bd9/storylist_1_pc_3840-1800.jpg",
     },
     {
         id: 6,
         category: "COLLABORATION",
         title: "MUGLER X GENTLE MONSTER",
         description: "뮈글러의 아방가르드한 감성과 젠틀몬스터의 대담함이 만났습니다.",
-        image: "https://images.gentlemonster.com/contents/stories/mugler/main_pc.jpg",
+        image: "https://gm-dev-resource.gentlemonster.com/service/story/image/a0d33e33-8783-4e5e-9231-3da11d82889d/5.mugler_storylist_pc.jpg",
     },
     {
         id: 7,
         category: "SPACE",
         title: "HAUS DOSAN",
         description: "미래지향적인 유통의 새로운 방향성을 제시하는 하우스 도산.",
-        image: "https://images.gentlemonster.com/contents/stories/haus-dosan/main_pc.jpg",
+        image: "https://gm-dev-resource.gentlemonster.com/service/story/image/b376ace0-37a7-4a6b-b37f-fe7f282fe5a3/4.hausnowhereshenzhen_storylist_pc.jpg",
     },
     {
         id: 8,
         category: "COLLECTION",
         title: "2025 BOLD COLLECTION",
         description: "은하계의 별들을 모티브로 한 대담한 실루엣의 볼드 컬렉션.",
-        image: "https://images.gentlemonster.com/contents/stories/2025-bold-collection/main_pc.jpg",
+        image: "https://gm-prd-resource.gentlemonster.com/main/banner/undefined/af252f9e-4d9b-4060-8fae-3fd4ead68a93/storylist_1_pc_3840*1800.jpg",
     }
 ];
 
 export default function Stories() {
     return (
-        <div className="pt-[90px] bg-white w-full">
+        <div className="pt-[90px]  w-full">
             {/* 개별 캠페인 섹션 */}
             {STORIES.map((story) => (
+                <Link to={""}>
                 <section key={story.id} className="relative w-full border-b border-gray-100 last:border-none">
                     {/* 이미지 컨테이너: 가로 전체 차지 */}
                     <div className="w-full h-[80vh] min-h-[500px] overflow-hidden">
@@ -90,6 +93,7 @@ export default function Stories() {
                         </button>
                     </div>
                 </section>
+                </Link>
             ))}
         </div>
     );
