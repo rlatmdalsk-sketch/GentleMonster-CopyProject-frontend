@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { LuX } from "react-icons/lu";
 import { twMerge } from "tailwind-merge";
 import useAuthStore from "../../stores/useAuthStore.ts";
+import {loginUser} from "../../api/auth.api.ts";
 
 interface Props {
     isOpen: boolean;
@@ -13,27 +14,38 @@ const LoginDrawer = ({ isOpen, onClose }: Props) => {
     const navigate = useNavigate();
     const { login } = useAuthStore();
 
-    // 1. 입력 필드 상태 관리
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    // 2. 로그인 처리 핸들러
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        try {
+            // loginUser 호출
+            const result = await loginUser({ email, password });
 
-        // 유효성 검사
-        if (!email || !password) {
-            alert("이메일과 비밀번호를 모두 입력해주세요.");
-            return;
+            // 🌟 콘솔로 구조 확인 (result.data 안에 알맹이가 있는지 확인)
+            console.log("로그인 응답 데이터:", result);
+
+            // 🌟 핵심 수정: 서버 응답이 { data: { user, token }, message: "..." } 구조임
+            if (result && result.data && result.data.token) {
+                const { user, token } = result.data; // data 주머니 안에서 꺼내기
+
+                // Zustand 스토어의 login 함수 호출
+                login(user, token);
+
+                alert(`${user.name}님, 환영합니다`);
+                window.location.href = "/";
+            } else {
+                console.error("구조 불일치:", result);
+                alert("서버 응답 형식이 올바르지 않습니다.");
+            }
+        } catch (error: any) {
+            console.error("로그인 실패", error);
+
+            // 에러 메시지 처리
+            const errorMessage = error.response?.data?.message || "로그인 중 오류가 발생했습니다.";
+            alert(errorMessage);
         }
-
-        // 실제 프로젝트에서는 여기서 백엔드 API를 호출합니다.
-        // 현재는 Zustand 스토어의 login 함수를 실행하여 상태를 true로 바꿉니다.
-        login();
-
-        alert("로그인이 완료되었습니다.");
-        onClose(); // 드로어 닫기
-        navigate("/"); // 홈으로 이동
     };
 
     // 버튼 활성화 여부

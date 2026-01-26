@@ -33,34 +33,34 @@ function Register() {
             await registerUser(data);
 
             console.log("2. 로그인 시도...");
-            const response = await loginUser({
+            // 🌟 여기서 호출하는 loginUser는 이미 response.data를 반환합니다.
+            const result = await loginUser({
                 email: data.email,
                 password: data.password
             });
 
-            console.log("3. 로그인 응답 데이터 상세:", response);
+            // 🌟 콘솔에서 데이터가 어떻게 오는지 직접 확인 (디버깅용)
+            console.log("3. 로그인 응답 결과:", result);
 
-            // 핵심 수정: response.data 내부의 값을 확인합니다.
-            if (response && response.data && response.data.token) {
-                const token = response.data.token;
-                const user = response.data.user;
+            // 🌟 핵심 수정: result.data.token이 아니라 result.token으로 접근
+            if (result && result.data && result.data.token) {
+                const user = result.data.user;
+                const token = result.data.token;
 
-                // Zustand 스토어에 저장 (순서 주의: user, token)
+                // Zustand 스토어에 저장
                 login(user, token);
 
-                console.log("4. 스토어 및 로컬스토리지 저장 완료");
+                console.log("4. 로그인 성공! 데이터 저장 완료");
                 alert("회원가입 및 로그인이 완료되었습니다!");
                 navigate("/");
             } else {
-                console.error("구조 불일치! response.data.token이 있는지 확인하세요.");
-                alert("자동 로그인 처리 중 구조 오류가 발생했습니다.");
+                console.error("여전히 구조가 다릅니다:", result);
+                alert("서버 응답 형식이 올바르지 않습니다.");
             }
-        } catch (error) {
-            console.error("오류 발생 지점:", error);
-            if (error instanceof AxiosError) {
-                const serverMessage = error.response?.data?.message || "처리에 실패했습니다.";
-                setError("root", { message: serverMessage });
-            }
+        } catch (error: any) {
+            console.error("오류 발생:", error);
+            const serverMessage = error.response?.data?.message || "처리에 실패했습니다.";
+            setError("root", { message: serverMessage });
         }
     };
 

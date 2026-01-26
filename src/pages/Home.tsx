@@ -241,7 +241,7 @@ function Home() {
 
                 {/* 슬라이더 영역: 텍스트 바로 아래 붙도록 설정 */}
                 <div className="mt-20">
-                    <LookBookSlider/>
+                    <LookBookSlider />
                 </div>
             </div>
 
