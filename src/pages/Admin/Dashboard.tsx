@@ -50,6 +50,8 @@ export default function Dashboard() {
     );
 
     return (
+        <div className="min-h-screen bg-[#F2F2F2] flex font-sans text-black">
+
             <main className="flex-1 p-12 space-y-12">
                 {/* 헤더: 로그인 유저(adminInfo) 연동 */}
                 <div className="flex justify-between items-end border-b border-black pb-4">
@@ -133,5 +135,6 @@ export default function Dashboard() {
                     </div>
                 </section>
             </main>
+        </div>
     );
 }

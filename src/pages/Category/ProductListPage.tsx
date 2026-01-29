@@ -3,38 +3,54 @@ import { twMerge } from "tailwind-merge";
 import { CATEGORY_DATA } from "../components/CATEGORY_DATA.tsx";
 
 const ProductListPage = () => {
-    // 1. URL에서 category(sunglasses/glasses)와 id(2026-collection 등)를 모두 가져옵니다.
     const { category, id } = useParams<{ category: string; id: string }>();
 
-    // 2. 2단 구조에 맞춰 데이터를 찾습니다.
-    // CATEGORY_DATA["sunglasses"]["2026-collection"] 형태가 됩니다.
-    const categoryGroup = category ? CATEGORY_DATA[category] : null;
-    const currentCategory = (categoryGroup && id && categoryGroup[id]) || {
-        title: "컬렉션",
-        description: "젠틀몬스터의 새로운 라인업을 만나보세요."
-    };
+    const categoryKey = category === "sunglass" ? "sunglasses" :
+        category === "glass" ? "glasses" : category;
+
+    const categoryGroup = categoryKey ? CATEGORY_DATA[categoryKey] : null;
+    const cleanId = id?.replace(/^\//, "");
+    const currentCategory = categoryGroup && cleanId ? categoryGroup[cleanId] : null;
+
+    if (!currentCategory) {
+        return <div className="pt-40 text-center text-[13px]">데이터를 찾을 수 없습니다.</div>;
+    }
+
+    const isCollection = "image" in currentCategory;
 
     return (
-        <main className="relative">
-            {/* 상단 고정 영역 */}
-            <div className={twMerge(
-                "flex flex-col items-center pt-25 pb-10 gap-5 w-full",
-                "fixed top-22 left-0 z-40 "
-            )}>
-                {/* 🌟 동적 제목 출력 */}
-                <h2 className={twMerge("text-[20px]", "font-[550]")}>
-                    {currentCategory.title}
-                </h2>
+        <main className="relative w-full min-h-screen ">
+            {isCollection ? (
+                <section className="relative w-full h-screen overflow-hidden">
+                    <img
+                        src={(currentCategory as any).image}
+                        className="w-full h-full object-cover"
+                        alt="collection hero"
+                    />
+                    <div className="absolute inset-0 bg-black/10 flex flex-col justify-end pb-24 px-10">
+                        <div className="text-white max-w-[700px]">
+                            <h2 className="text-[24px] font-bold mb-4 uppercase tracking-tighter">
+                                {currentCategory.title}
+                            </h2>
+                            <p className="text-[12px] leading-relaxed whitespace-pre-line font-light opacity-90">
+                                {currentCategory.description}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            ) : (
+                <section className=" top-22 left-0 z-40 w-full  flex flex-col items-center pt-24 pb-12 gap-6">
+                    <h2 className="text-[18px] font-bold uppercase tracking-[0.15em]">
+                        {currentCategory.title}
+                    </h2>
+                    <p className="text-[11px] text-center max-w-[800px] px-6 text-gray-500 leading-relaxed whitespace-pre-line">
+                        {currentCategory.description}
+                    </p>
+                </section>
+            )}
 
-                {/* 🌟 동적 설명 출력 */}
-                <p className={twMerge("text-[12px]", "font-[500]", "text-center", "max-w-[800px] px-5 whitespace-pre-line")}>
-                    {currentCategory.description}
-                </p>
-            </div>
-
-            {/* 상품 리스트 영역 (위 영역에 가려지지 않게 여백 필요) */}
-            <div className="pt-[300px] px-10">
-                {/* 여기에 API로 불러온 상품들을 뿌려줄 예정입니다. */}
+            <div className={isCollection ? "pt-20" : "pt-[320px]"}>
+                {/* 상품 리스트 컴포넌트 */}
             </div>
         </main>
     );

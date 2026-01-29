@@ -73,7 +73,7 @@ export default function Stories() {
                         <img
                             src={story.image}
                             alt={story.title}
-                            className="w-full h-full object-cover transition-transform duration-[1.5s] hover:scale-105"
+                            className="w-full h-full object-cover "
                         />
                     </div>
 

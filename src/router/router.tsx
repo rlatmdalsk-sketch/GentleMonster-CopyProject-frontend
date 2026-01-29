@@ -21,7 +21,6 @@ export const adminOnlyLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
     if (!isLoggedIn) {
         alert("관리자 로그인이 필요합니다.");
-        return redirect("/login");
     }
 
     if (user?.role !== "ADMIN") {
@@ -44,7 +43,7 @@ const router = createBrowserRouter([
             { path: "myaccount/ProfileEdit", element: <ProfileEdit /> },
             /*카테고리*/
             { path: "category/:category/:id", element: <ProductListPage /> },
-            { path: "stories", element: <Stories /> },
+            { path: "/stories", element: <Stories /> },
         ],
     },
     /* 관리용 */
